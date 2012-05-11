@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@color/grey_translucent"
+>
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/button_layout"
+    >
+        <!-- NOTE the order of these buttons must match the market selector constants 
+                in AMMConstants to ensure that getRadioSelection works properly 
+            Using white explicitly because Nook reverses colors, making the text black by default.
+        -->
+        <RadioGroup
+            android:id="@+id/radioGroup_marketselector"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+    
+        >
+            <RadioButton
+                android:id="@+id/radio0"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_nolink"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:checked="true"
+            />
+
+            <RadioButton
+                android:id="@+id/radio1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_google"
+                android:textColor="@color/white"
+                android:gravity="center"
+            />
+    
+            <RadioButton
+                android:id="@+id/radio2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_amazon"
+                android:textColor="@color/white"
+                android:gravity="center"
+            />
+    
+            <RadioButton
+                android:id="@+id/radio3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_nook"
+                android:textColor="@color/white"
+                android:gravity="center"
+            />
+    
+            <RadioButton
+                android:id="@+id/radio4"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_blackberry"
+                android:textColor="@color/white"
+                android:gravity="center"
+            />
+        </RadioGroup>
+    </ScrollView>
+    
+    <LinearLayout
+        android:id="@+id/button_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+    >
+        <Button
+            android:id="@+id/button_showapp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_showapp"
+            android:onClick="onShowApp"
+        />
+        
+        <Button
+            android:id="@+id/button_showall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_showall"
+            android:onClick="onShowAll"
+        />
+    </LinearLayout>
+</RelativeLayout>

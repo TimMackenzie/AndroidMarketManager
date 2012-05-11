@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2012 Simplify Now, LLC -->
+<!-- English -->
+<resources>
+    <string name="market_not_found_message_prefix">Cannot automatically start your app market.  Please search for \""</string>
+    <string name="market_not_found_message_postfix">"\" to find all of our apps."</string>
+</resources>

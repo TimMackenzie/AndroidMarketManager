@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Android Market Manager Test</string>
+
+    <string name="button_showapp">Show App</string>
+    <string name="button_showall">Show All Apps</string>    
+
+    <string name="label_nolink">No link</string>
+    <string name="label_google">Google Play</string>
+    <string name="label_amazon">Amazon Appstore</string>
+    <string name="label_nook">Nook Store</string>
+    <string name="label_blackberry">BlackBerry Appworld</string>
+</resources>
