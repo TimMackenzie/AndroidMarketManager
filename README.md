@@ -1,4 +1,4 @@
-![Alt text](AndroidMarketManager.png)
+![Android Market Manager](https://github.com/TimMackenzie/AndroidMarketManager/raw/master/AndroidMarketManager.png)
 
 
 Introduction
