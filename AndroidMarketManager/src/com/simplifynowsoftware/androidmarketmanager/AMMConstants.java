@@ -25,9 +25,15 @@ package com.simplifynowsoftware.androidmarketmanager;
  *   
  * @author Tim Mackenzie - Simplify Now, LLC
  * @since Android API 3
- * @version 1.0.0
+ * @version 1.0.1
  */
 public class AMMConstants {
+    /*
+     * If experiencing trouble with this package, enable this debug flag to 
+     *  turn on additional logging.
+     */
+    public static final boolean DEBUG_ENABLED = false;
+    
     /*
      * These constants trigger the behavior for the specified Android app market
      * Suggested use is to define a constant in the app using this package,
@@ -45,10 +51,13 @@ public class AMMConstants {
     public static final int MARKET_SELECTOR_AMAZON      = 2;
     public static final int MARKET_SELECTOR_NOOK        = 3;
     public static final int MARKET_SELECTOR_BLACKBERRY  = 4;
+    public static final int MARKET_SELECTOR_SAMSUNG     = 5;
     
     /*
-     * The Kindle Fire identifies itself as such
+     * The Kindle Fire identifies itself as such.
+     * The Amazon manufacturer ID may be needed for future Amazon devices.
      */
+    public static final String DEVICE_MANUFACTURER_AMAZON   = "Amazon";
     public static final String DEVICE_MODEL_KINDLE_FIRE     = "Kindle Fire";
     
     /*
@@ -68,7 +77,7 @@ public class AMMConstants {
     public static final String MARKET_URL_APP_PREFIX_WEB    = "http://play.google.com/store/apps/details?id=";
     
     /*
-     * Amazon URLs constructed as such:
+     * Amazon Appstore URLs constructed as such:
      *  <prefix><type><identifier>[<postfix>]
      * 
      * Note that there there is a direct URL for each app as well, but that 
@@ -79,7 +88,8 @@ public class AMMConstants {
      * The vendor ID should be formatted (spaces are OK, but use formatting 
      *  characters for quotes or commas)
      *  
-     * Postfix is for searching using the app type and app identifier
+     * Postfix is for searching using the app type and app identifier.
+     *  This search will show all apps, with the selected app at the top.
      */
     public static final String AMAZON_URL_PREFIX_COMMON     = "http://www.amazon.com/gp/mas/dl/android?";
     public static final String AMAZON_URL_TYPE_APP          = "p=";
@@ -105,4 +115,16 @@ public class AMMConstants {
     public static final String BLACKBERRY_URL_VENDOR_ALL_WEB_PREFIX = "https://appworld.blackberry.com/webstore/vendor/";
     public static final String BLACKBERRY_URL_PREFIX                = "appworld://content/";
     public static final String BLACKBERRY_URL_PREFIX_WEB            = "https://appworld.blackberry.com/webstore/content/";
+    
+    /*
+     * Samsung Apps
+     * Link to individual app:
+     *  samsungapps://ProductDetail/your.package.name
+     * Web link
+     *  http://www.samsungapps.com/topApps/topAppsDetail.as?productId=<product_ID>
+     * Search is possible, but not directly supported.  This may or may not find all apps by a developer
+     *  http://www.samsungapps.com/topApps/topAppsList.as?mkt_keyword=<Developer Name>
+     */
+    public static final String SAMSUNG_URL_PREFIX           = "samsungapps://ProductDetail/";
+    public static final String SAMSUNG_WEB_SEARCH_PREFIX    = "http://www.samsungapps.com/topApps/topAppsList.as?mkt_keyword=";
 }

@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 /**
  * The AMMLinks class exposes static functionality to:
@@ -34,7 +35,7 @@ import android.net.Uri;
  * 
  * @author Tim Mackenzie - Simplify Now, LLC
  * @since Android API 3
- * @version 1.0.0
+ * @version 1.1.0
  */
 public class AMMLinks {
     /**
@@ -110,6 +111,12 @@ public class AMMLinks {
                  */ 
                 marketUrl =   AMMConstants.BLACKBERRY_URL_VENDOR_ALL_WEB_PREFIX
                             + bbDeveloperID;
+            } else if(marketSelector == AMMConstants.MARKET_SELECTOR_SAMSUNG){
+                /*
+                 * Currently no Samsung url for all apps, so using web search
+                 */
+                marketUrl =   AMMConstants.SAMSUNG_WEB_SEARCH_PREFIX 
+                            + developerName;
             }
             
             if(marketUrl.equals("")) {
@@ -136,6 +143,10 @@ public class AMMLinks {
                      *  user how to find it themselves.
                      */
                     showMarketMessage( context, developerName );
+                    
+                    if(AMMConstants.DEBUG_ENABLED) {
+                        Log.e("marketShowAll", "Can't launch intent for URL: " + marketUrl);
+                    }
                 }
             }
         }
@@ -155,7 +166,9 @@ public class AMMLinks {
      *  current app.
      * <p>
      * Both nookEAN and bbID must come from the respective app stores, and are
-     *  not known until the app is released to that store.
+     *  not known until the app is released to that store.  In the case of 
+     *  BlackBerry, the bbVendorID can be provided to show all apps by 
+     *  this developer.  If bbID is provided, bbVendorID is ignored.
      * <p>
      * Unknown values for the app package/ID can be left blank, but this will
      *  cause failure (the market message) if that market is selected.
@@ -165,13 +178,15 @@ public class AMMLinks {
      * @param appPackage       Full package name for Google and Amazon (e.g. com.x.x)
      * @param nookEAN          Numeric ID for app on Nook Store
      * @param bbID             Numeric ID for app on BlackBerry Appworld
+     * @param bbVendorID       Numeric ID for vendor on BlackBerry Appworld
      * @param developerName    Name used to search for developer in app markets
      */
     public static void marketShowApp(   final Context context, 
                                         final int marketSelector, 
                                         final String appPackage, 
                                         final String nookEAN, 
-                                        final String bbID, 
+                                        final String bbID,
+                                        final String bbVendorID,
                                         final String developerName) {
         String marketUrl = "";
         
@@ -190,9 +205,17 @@ public class AMMLinks {
         } else if(marketSelector == AMMConstants.MARKET_SELECTOR_NOOK & null != nookEAN){
             // Just the EAN for Nook
             marketUrl = nookEAN;
-        } else if(marketSelector == AMMConstants.MARKET_SELECTOR_BLACKBERRY && null != bbID){
-            // Workaround to handle when bbID isn't known until release:  Show all apps.
-            marketUrl = AMMConstants.BLACKBERRY_URL_PREFIX + bbID;
+        } else if(marketSelector == AMMConstants.MARKET_SELECTOR_BLACKBERRY){
+            // Attempt to use bbID, then fall back to bbVendorID
+            if(null == bbID) {
+                marketUrl = AMMConstants.BLACKBERRY_URL_VENDOR_ALL_WEB_PREFIX
+                                    + bbVendorID;
+            } else {
+                marketUrl = AMMConstants.BLACKBERRY_URL_PREFIX + bbID;
+            }
+        } else if(marketSelector == AMMConstants.MARKET_SELECTOR_SAMSUNG & null != appPackage){
+            marketUrl =   AMMConstants.SAMSUNG_URL_PREFIX 
+                        + appPackage;
         }
         
         if(marketUrl.equals("")) {
@@ -228,6 +251,10 @@ public class AMMLinks {
                  *  user how to find it themselves.
                  */
                 showMarketMessage( context, developerName );
+                
+                if(AMMConstants.DEBUG_ENABLED) {
+                    Log.e("marketShowApp", "Can't launch intent for URL: " + marketUrl);
+                }
             }
         }
     }
@@ -235,7 +262,7 @@ public class AMMLinks {
     /**
      * Generate error message for user, showing the developer's name to search for
      */
-    protected static String generateMarketMessage(final Context context, final String developerName) {
+    public static String generateMarketMessage(final Context context, final String developerName) {
         return context.getString(R.string.market_not_found_message_prefix) + developerName + context.getString(R.string.market_not_found_message_postfix);
     }
     

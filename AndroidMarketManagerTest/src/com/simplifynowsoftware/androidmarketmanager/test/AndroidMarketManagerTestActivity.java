@@ -73,7 +73,8 @@ public class AndroidMarketManagerTestActivity extends Activity {
                                 getRadioSelection(), 
                                 APP_PACKAGE, 
                                 NOOK_EAN, 
-                                BBID, 
+                                BBID,
+                                BB_DEVELOPER_ID,
                                 DEVELOPER_NAME);
     }
     
