@@ -115,8 +115,8 @@ public class AMMLinks {
                 /*
                  * Currently no Samsung url for all apps, so using web search
                  */
-                marketUrl =   AMMConstants.SAMSUNG_WEB_SEARCH_PREFIX 
-                            + developerName;
+                marketUrl =   AMMConstants.SAMSUNG_WEB_SEARCH_PREFIX + "\""
+                            + developerName + "\"";
             }
             
             if(marketUrl.equals("")) {
