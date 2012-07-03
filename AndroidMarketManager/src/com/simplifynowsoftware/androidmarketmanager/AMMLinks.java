@@ -104,13 +104,20 @@ public class AMMLinks {
                 }
             } else if(marketSelector == AMMConstants.MARKET_SELECTOR_BLACKBERRY){
                 /*
-                 * Note that this loads the web page to show all apps in
-                 *  BlackBerry Appworld - more research is needed to show 
+                 * The web page loaded to show all apps in BlackBerry Appworld
+                 *  is not the native browser, and therefore doesn't work to
+                 *  click on app links.  More research is needed to show 
                  *  all apps by the developer where users can directly view
                  *  and buy apps.
+                 * Until a better solution is found, doing a search using 
+                 *  the Google Play syntax.  This finds more than just apps
+                 *  by this dev.
                  */ 
-                marketUrl =   AMMConstants.BLACKBERRY_URL_VENDOR_ALL_WEB_PREFIX
-                            + bbDeveloperID;
+//                marketUrl =   AMMConstants.BLACKBERRY_URL_VENDOR_ALL_WEB_PREFIX
+//                            + bbDeveloperID;
+                
+                marketUrl = AMMConstants.MARKET_URL_SEARCH_PREFIX 
+                        + developerName;
             } else if(marketSelector == AMMConstants.MARKET_SELECTOR_SAMSUNG){
                 /*
                  * Currently no Samsung url for all apps, so using web search
@@ -206,13 +213,24 @@ public class AMMLinks {
             // Just the EAN for Nook
             marketUrl = nookEAN;
         } else if(marketSelector == AMMConstants.MARKET_SELECTOR_BLACKBERRY){
-            // Attempt to use bbID, then fall back to bbVendorID
-            if(null == bbID) {
-                marketUrl = AMMConstants.BLACKBERRY_URL_VENDOR_ALL_WEB_PREFIX
-                                    + bbVendorID;
-            } else {
-                marketUrl = AMMConstants.BLACKBERRY_URL_PREFIX + bbID;
+            /*
+             * Until BB linking works again, reverting to Google Play linking
+             * Note that if your package name is different in BlackBerry, 
+             *  you'll have to ensure the proper data is passed in for the
+             *  packageName for that build.
+             */
+            if(null != appPackage){
+                marketUrl =   AMMConstants.MARKET_URL_APP_PREFIX 
+                        + appPackage;
             }
+            // Original logic to restore later...
+//            // Attempt to use bbID, then fall back to bbVendorID
+//            if(null == bbID) {
+//                marketUrl = AMMConstants.BLACKBERRY_URL_VENDOR_ALL_WEB_PREFIX
+//                                    + bbVendorID;
+//            } else {
+//                marketUrl = AMMConstants.BLACKBERRY_URL_PREFIX + bbID;
+//            }
         } else if(marketSelector == AMMConstants.MARKET_SELECTOR_SAMSUNG & null != appPackage){
             marketUrl =   AMMConstants.SAMSUNG_URL_PREFIX 
                         + appPackage;

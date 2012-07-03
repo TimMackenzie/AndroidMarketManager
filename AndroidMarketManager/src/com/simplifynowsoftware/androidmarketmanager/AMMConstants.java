@@ -110,6 +110,11 @@ public class AMMConstants {
      * appID and vendorID are numeric
      *  <prefix><appID>
      *  <prefix><vendorID>
+     *  
+     * NOTE as of July 2012, the appworld:\\ links don't appear to work at all.  
+     *  The web links will work in an email (which launches the BB browser 
+     *  properly) but will not work when launched from an Android app.
+     * Reverting to Google Play linking for individual apps and for search by dev.
      */
     public static final String BLACKBERRY_URL_VENDOR_ALL_PREFIX     = "appworld://vendor/";
     public static final String BLACKBERRY_URL_VENDOR_ALL_WEB_PREFIX = "https://appworld.blackberry.com/webstore/vendor/";
