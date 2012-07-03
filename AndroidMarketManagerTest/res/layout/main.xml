@@ -68,6 +68,15 @@
                 android:textColor="@color/white"
                 android:gravity="center"
             />
+            
+            <RadioButton
+                android:id="@+id/radio5"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_samsung"
+                android:textColor="@color/white"
+                android:gravity="center"
+            />
         </RadioGroup>
     </ScrollView>
     

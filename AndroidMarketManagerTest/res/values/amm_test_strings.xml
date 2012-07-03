@@ -10,4 +10,5 @@
     <string name="label_amazon">Amazon Appstore</string>
     <string name="label_nook">Nook Store</string>
     <string name="label_blackberry">BlackBerry Appworld</string>
+    <string name="label_samsung">Samsung Apps</string>
 </resources>
