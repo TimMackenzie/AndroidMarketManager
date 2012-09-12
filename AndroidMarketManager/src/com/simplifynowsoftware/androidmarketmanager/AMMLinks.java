@@ -35,7 +35,7 @@ import android.util.Log;
  * 
  * @author Tim Mackenzie - Simplify Now, LLC
  * @since Android API 3
- * @version 1.1.0
+ * @version 1.1.1
  */
 public class AMMLinks {
     /**
@@ -75,15 +75,19 @@ public class AMMLinks {
              * See AMMConstants for details on URL construction for each market
              */
             if(marketSelector == AMMConstants.MARKET_SELECTOR_AMAZON) {
+                if(AMMConstants.AMAZON_USE_HTTP) {
+                    marketUrl =   AMMConstants.AMAZON_URL_PREFIX_COMMON;
+                } else {
+                    marketUrl =   AMMConstants.AMAZON_AMZ_PREFIX_COMMON;
+                }
+                
                 if(null == amazonDeveloperID) {
                     // Fallback - find by searching from the current package name.
-                    marketUrl =   AMMConstants.AMAZON_URL_PREFIX_COMMON 
-                                + AMMConstants.AMAZON_URL_TYPE_APP + context.getPackageName() 
+                    marketUrl +=  AMMConstants.AMAZON_URL_TYPE_APP + context.getPackageName() 
                                 + AMMConstants.AMAZON_URL_POSTFIX_SHOWALL;
                 } else {
                     // Explicit search for developer's apps
-                    marketUrl =   AMMConstants.AMAZON_URL_PREFIX_COMMON 
-                                + AMMConstants.AMAZON_URL_TYPE_SEARCH 
+                    marketUrl +=  AMMConstants.AMAZON_URL_TYPE_SEARCH 
                                 + amazonDeveloperID;
                 }
             } else if(marketSelector == AMMConstants.MARKET_SELECTOR_GOOGLE){
@@ -203,9 +207,14 @@ public class AMMLinks {
          * If any required values are null, the error message will be displayed
          */
         if(marketSelector == AMMConstants.MARKET_SELECTOR_AMAZON & null != appPackage) {
-            marketUrl =   AMMConstants.AMAZON_URL_PREFIX_COMMON 
-                        + AMMConstants.AMAZON_URL_TYPE_APP 
-                        + appPackage;
+            if(AMMConstants.AMAZON_USE_HTTP) {
+                marketUrl =   AMMConstants.AMAZON_URL_PREFIX_COMMON;
+            } else {
+                marketUrl =   AMMConstants.AMAZON_AMZ_PREFIX_COMMON;
+            }
+            
+            marketUrl +=      AMMConstants.AMAZON_URL_TYPE_APP 
+                            + appPackage;
         } else if(marketSelector == AMMConstants.MARKET_SELECTOR_GOOGLE & null != appPackage){
             marketUrl =   AMMConstants.MARKET_URL_APP_PREFIX 
                         + appPackage;

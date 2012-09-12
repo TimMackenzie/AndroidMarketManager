@@ -25,7 +25,7 @@ package com.simplifynowsoftware.androidmarketmanager;
  *   
  * @author Tim Mackenzie - Simplify Now, LLC
  * @since Android API 3
- * @version 1.0.1
+ * @version 1.0.2
  */
 public class AMMConstants {
     /*
@@ -80,21 +80,53 @@ public class AMMConstants {
      * Amazon Appstore URLs constructed as such:
      *  <prefix><type><identifier>[<postfix>]
      * 
-     * Note that there there is a direct URL for each app as well, but that 
-     *  uses the Amazon ASIN:
+     * Note that there there is a direct URL for each app as well, which uses 
+     *  the Amazon ASIN:
      *  http://www.amazon.com/gp/product/<ASIN>
+     * 
+     * Prefix options:
+     *  It appears that the http and amzn prefix strings operate with the
+     *      same parameters.  
+     *  The HTTP version gives users a choice to view in the browser or in the
+     *      Amazon Appstore app.  The direct method (amzn://) goes directly to
+     *      the Amazon Appstore app if it is installed, and is now the default
+     *      behavior.  If having trouble with the direct method, set 
+     *      AMAZON_USE_HTTP to true to use the HTTP prefix. 
+     * 
+     * Type options:
+     *  s       - search by term
+     *  p       - package name (explicit)
+     *  asin    - ASIN for a specific app (as seen on the Amazon product page)
      * 
      * The identifier can be either the app package name or the vendor ID.
      * The vendor ID should be formatted (spaces are OK, but use formatting 
-     *  characters for quotes or commas)
+     *  characters for quotes or commas).  There are some reports that you
+     *  should use formatting characters for spaces as well.
      *  
-     * Postfix is for searching using the app type and app identifier.
-     *  This search will show all apps, with the selected app at the top.
+     * Postfix options:
+     *  "&showAll=1" - show multiple results (for use with 'p' type)
+     *      All apps from vendor will be shown, with the selected app at the top
+     *  "&t=myassociatetag" - add an associate tag to the link 
+     *      Replace 'myassociatetag' with your own
+     *      Note that app sales are currently excluded from Associates program
+     *  "&ref=myreftag" - add a referral tag
+     *      Not sure what this is for, but it was listed by an Amazon employee
+     *      
+     *  Some of the preceding is from Amazon employee comments in this thread:
+     *      https://forums.developer.amazon.com/forums/thread.jspa?threadID=91&tstart=0
+     *      
+     *  Note that AMMLinks currently doesn't use the asin, associate, or 
+     *      referral options.  It may in the future.
      */
-    public static final String AMAZON_URL_PREFIX_COMMON     = "http://www.amazon.com/gp/mas/dl/android?";
-    public static final String AMAZON_URL_TYPE_APP          = "p=";
-    public static final String AMAZON_URL_TYPE_SEARCH       = "s=";
-    public static final String AMAZON_URL_POSTFIX_SHOWALL   = "&showAll=1";
+    public static final boolean AMAZON_USE_HTTP              = false;
+    public static final String  AMAZON_URL_PREFIX_COMMON     = "http://www.amazon.com/gp/mas/dl/android?";
+    public static final String  AMAZON_AMZ_PREFIX_COMMON     = "amzn://apps/android?";
+    public static final String  AMAZON_URL_TYPE_APP          = "p=";
+    public static final String  AMAZON_URL_TYPE_SEARCH       = "s=";
+    public static final String  AMAZON_URL_TYPE_ASIN         = "asin=";
+    public static final String  AMAZON_URL_POSTFIX_SHOWALL   = "&showAll=1";
+    public static final String  AMAZON_URL_POSTFIX_ASSOCIATE = "&t=";
+    public static final String  AMAZON_URL_POSTFIX_REFERRAL  = "&ref=";
  
     /*
      * Nook URLs
