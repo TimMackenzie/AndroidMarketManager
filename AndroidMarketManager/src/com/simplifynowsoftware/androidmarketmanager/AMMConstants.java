@@ -112,8 +112,8 @@ public class AMMConstants {
      *  "&ref=myreftag" - add a referral tag
      *      Not sure what this is for, but it was listed by an Amazon employee
      *      
-     *  Some of the preceding is from Amazon employee comments in this thread:
-     *      https://forums.developer.amazon.com/forums/thread.jspa?threadID=91&tstart=0
+     *  See the official documentation:
+     *      https://developer.amazon.com/sdk/in-app-purchasing/sample-code/deeplink.html
      *      
      *  Note that AMMLinks currently doesn't use the asin, associate, or 
      *      referral options.  It may in the future.
