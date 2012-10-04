@@ -20,8 +20,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.simplifynowsoftware.androidmarketmanager.AMMLinks;
+import com.simplifynowsoftware.androidmarketmanager.AMMUtils;
 
 /**
  * AndroidMarketManagerTestActivity is the interface to test the 
@@ -29,7 +31,7 @@ import com.simplifynowsoftware.androidmarketmanager.AMMLinks;
  *   
  * @author Tim Mackenzie - Simplify Now, LLC
  * @since Android API 3
- * @version 1.0.0
+ * @version 1.0.1
  */
 public class AndroidMarketManagerTestActivity extends Activity {
     
@@ -88,5 +90,24 @@ public class AndroidMarketManagerTestActivity extends Activity {
                                 AMAZON_DEVELOPER_ID, 
                                 BB_DEVELOPER_ID, 
                                 DEVELOPER_NAME);
-    } 
+    }
+    
+    /*
+     * Run the device checks from AMMUtils and report the results
+     */
+    public void onTestDevice(final View v) {
+        final boolean isKindleFire = AMMUtils.isDeviceKindleFire(this);
+        final boolean isNook = AMMUtils.isDeviceNook(this);
+        final boolean isNookCT = AMMUtils.isDeviceNookCT(this);
+        final boolean isNookHD = AMMUtils.isDeviceNookHD(this);
+        
+        StringBuilder builder = new StringBuilder();
+        
+        builder.append(getString(R.string.message_kindlefire) + "\n\t" + isKindleFire + "\n\n");
+        builder.append(getString(R.string.message_nook) + "\n\t" + isNook + "\n\n");
+        builder.append(getString(R.string.message_nookct) + "\n\t" + isNookCT + "\n\n");
+        builder.append(getString(R.string.message_nookhd) + "\n\t" + isNookHD + "\n\n");
+        
+        Toast.makeText(this, builder.toString(), Toast.LENGTH_LONG).show();
+    }
 }

@@ -3,8 +3,14 @@
     <string name="app_name">Android Market Manager Test</string>
 
     <string name="button_showapp">Show App</string>
-    <string name="button_showall">Show All Apps</string>    
+    <string name="button_showall">Show All Apps</string>
+    <string name="button_testdevice">Test Device Model</string>   
 
+    <string name="message_kindlefire">Kindle Fire:</string>  
+    <string name="message_nook">Nook device:</string>
+    <string name="message_nookct">Nook Color or Nook Tablet:</string>
+    <string name="message_nookhd">Nook HD or Nook HD+:</string>
+    
     <string name="label_nolink">No link</string>
     <string name="label_google">Google Play</string>
     <string name="label_amazon">Amazon Appstore</string>

@@ -84,8 +84,9 @@
         android:id="@+id/button_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:gravity="center_horizontal"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/button_layout_extra"
     >
         <Button
             android:id="@+id/button_showapp"
@@ -101,6 +102,23 @@
             android:layout_height="wrap_content"
             android:text="@string/button_showall"
             android:onClick="onShowAll"
+        />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/button_layout_extra"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+    >
+        <Button
+            android:id="@+id/button_testdevice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_testdevice"
+            android:onClick="onTestDevice"
         />
     </LinearLayout>
 </RelativeLayout>
