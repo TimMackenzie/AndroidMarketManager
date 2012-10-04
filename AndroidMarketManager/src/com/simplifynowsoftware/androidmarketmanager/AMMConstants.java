@@ -25,7 +25,7 @@ package com.simplifynowsoftware.androidmarketmanager;
  *   
  * @author Tim Mackenzie - Simplify Now, LLC
  * @since Android API 3
- * @version 1.0.2
+ * @version 1.0.3
  */
 public class AMMConstants {
     /*
@@ -59,6 +59,25 @@ public class AMMConstants {
      */
     public static final String DEVICE_MANUFACTURER_AMAZON   = "Amazon";
     public static final String DEVICE_MODEL_KINDLE_FIRE     = "Kindle Fire";
+    
+    /*
+     * Determine which Nook device the app is running on
+     * Based on BN recommendations:
+     *  https://nookdeveloper.zendesk.com/entries/20766627-android-os-build-model-and-build-product-information 
+     * There is a little dissent as to if it is better to use Build.MODEL or 
+     *  Build.PRODUCT.  However, until the HD line has known PRODUCT IDs, MODEL
+     *  must be used.
+     * A few PRODUCT IDs:
+     *  Nook Color:     NOOKcolor
+     *  Nook Tablet:    NOOKTablet
+     *  Nook HD:        TBD
+     *  Nook HD+:       TBD
+     */
+    public static final String DEVICE_MODEL_NOOK_COLOR          = "BNRV200";
+    public static final String DEVICE_MODEL_NOOK_TABLET_16GB    = "BNTV250";
+    public static final String DEVICE_MODEL_NOOK_TABLET_8GB     = "BNTV250a";
+    public static final String DEVICE_MODEL_NOOK_HD             = "BNTV400";
+    public static final String DEVICE_MODEL_NOOK_HDPLUS         = "BNTV600";
     
     /*
      * Google Play URLs are constructed:
