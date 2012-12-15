@@ -56,6 +56,12 @@ public class AMMConstants {
     /*
      * The Kindle Fire identifies itself as such.
      * The Amazon manufacturer ID may be needed for future Amazon devices.
+     * 
+     * Kindle Fire 1st Gen          - "Kindle Fire"
+     * Kindle Fire 2nd Gen          - "KFOT"
+     * Kindle Fire HD 7"            - "KFTT"
+     * Kindle Fire HD 8.9" Wi-Fi    - "KFJWI"
+     * Kindle Fire HD 8.9" WAN      - "KFJWA"
      */
     public static final String DEVICE_MANUFACTURER_AMAZON   = "Amazon";
     public static final String DEVICE_MODEL_KINDLE_FIRE     = "Kindle Fire";
