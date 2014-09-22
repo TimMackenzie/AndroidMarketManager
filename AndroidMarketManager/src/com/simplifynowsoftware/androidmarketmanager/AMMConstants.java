@@ -20,8 +20,11 @@ package com.simplifynowsoftware.androidmarketmanager;
  * The AMMConstants class stores market-related constants for this package.
  * 
  * Additional notes:
- *  SlideMe can accept market URLs, but if the developer ID differs from that
- *   on Google Play it won't be found.
+ *  SlideMe can accept market URLs, but if the developer/package ID differs from
+ *   that on Google Play it won't be found.
+ *  Nokia X also accepts Google Play market URLs, with the same caveat about
+ *   having an identical package ID.  Web links differ, of course.
+ *   http://developer.nokia.com/community/wiki/Deep_Linking_to_Store_on_Nokia_X
  *   
  * @author Tim Mackenzie - Simplify Now, LLC
  * @since Android API 3
@@ -56,15 +59,33 @@ public class AMMConstants {
     /*
      * The Kindle Fire identifies itself as such.
      * The Amazon manufacturer ID may be needed for future Amazon devices.
+     * Note that not all devices have a "1st Gen"; the Gen matches devices released at the same time. 
      * 
-     * Kindle Fire 1st Gen          - "Kindle Fire"
-     * Kindle Fire 2nd Gen          - "KFOT"
-     * Kindle Fire HD 7"            - "KFTT"
-     * Kindle Fire HD 8.9" Wi-Fi    - "KFJWI"
-     * Kindle Fire HD 8.9" WAN      - "KFJWA"
+     * See https://developer.amazon.com/sdk/fire/specifications.html for additional details.
+     * 
+     * Values for android.os.Build.MODEL
+     * 
+     * Kindle Fire 1st Gen              - "Kindle Fire"
+     * Kindle Fire 2nd Gen              - "KFOT"
+     * Kindle Fire HD 7" 2nd Gen        - "KFTT"
+     * Kindle Fire HD 7" 3rd Gen        - "KFSOWI"
+     * Kindle Fire HDX 7" Wi-Fi 3rd Gen - "KFTHWI"
+     * Kindle Fire HDX 7" Wan 3rd Gen   - "KFTHWA"
+     * Kindle Fire HD 8.9" Wi-Fi        - "KFJWI"
+     * Kindle Fire HD 8.9" WAN          - "KFJWA"
+     * Kindle Fire HDX 8.9" Wi-Fi       - "KFAPWI"
+     * Kindle Fire HDX 8.9" WAN         - "KFAPWA"
+     * 
+     * Fire Phone                       - "SD4930UR"
+     * 
+     * Fire HD 6 (4th Gen)              - TBD
+     * Fire HD 7 (4th Gen)              - TBD
+     * Fire HD 8.9 (4th Gen)            - TBD
+
+     * 
      */
     public static final String DEVICE_MANUFACTURER_AMAZON   = "Amazon";
-    public static final String DEVICE_MODEL_KINDLE_FIRE     = "Kindle Fire";
+    public static final String DEVICE_MODEL_KINDLE_FIRE     = "Kindle Fire"; // 1st Gen only
     
     /*
      * Determine which Nook device the app is running on
@@ -74,16 +95,18 @@ public class AMMConstants {
      *  Build.PRODUCT.  However, until the HD line has known PRODUCT IDs, MODEL
      *  must be used.
      * A few PRODUCT IDs:
-     *  Nook Color:     NOOKcolor
-     *  Nook Tablet:    NOOKTablet
-     *  Nook HD:        TBD
-     *  Nook HD+:       TBD
+     *  Nook Color:         NOOKcolor
+     *  Nook Tablet:        NOOKTablet
+     *  Nook HD:            TBD
+     *  Nook HD+:           TBD
+     *  Samsung Galaxy Tab: degaswifiopenbnn 
      */
     public static final String DEVICE_MODEL_NOOK_COLOR          = "BNRV200";
     public static final String DEVICE_MODEL_NOOK_TABLET_16GB    = "BNTV250";
     public static final String DEVICE_MODEL_NOOK_TABLET_8GB     = "BNTV250a";
     public static final String DEVICE_MODEL_NOOK_HD             = "BNTV400";
     public static final String DEVICE_MODEL_NOOK_HDPLUS         = "BNTV600";
+    public static final String DEVICE_MODEL_NOOK_SAMSUNG_TAB_4  = "SM-T230NU";
     
     /*
      * Google Play URLs are constructed:
@@ -91,6 +114,8 @@ public class AMMConstants {
      *  <prefix><vendorID>
      *  
      * The App ID is your package name.
+     * A more precise vendor name will help prevent false matches.  
+     * In some cases it might be better to use the DEVID prefix rather than the search.
      *  
      * The vendor name string must use formatting characters, such as:
      *  Entire phrase must be quoted (%22)
@@ -98,6 +123,7 @@ public class AMMConstants {
      *  Commas (%2C)
      */
     public static final String MARKET_URL_SEARCH_PREFIX     = "market://search?q="; // append vendor name string, using %20 and other formatting chars as appropriate
+    public static final String MARKET_URL_DEVID_PREFIX      = "market://developer?id=";
     public static final String MARKET_URL_APP_PREFIX        = "market://details?id=";
     public static final String MARKET_URL_APP_PREFIX_WEB    = "http://play.google.com/store/apps/details?id=";
     
@@ -182,11 +208,16 @@ public class AMMConstants {
      * Samsung Apps
      * Link to individual app:
      *  samsungapps://ProductDetail/your.package.name
+     * Link to all apps by developer
+     *  samsungapps://SellerDetail/your.vendor.id
      * Web link
      *  http://www.samsungapps.com/topApps/topAppsDetail.as?productId=<product_ID>
      * Search is possible, but not directly supported.  This may or may not find all apps by a developer
      *  http://www.samsungapps.com/topApps/topAppsList.as?mkt_keyword=<Developer Name>
+
+     * Note that the SellerDetail vendor ID appears on the "Profile" tab in the Seller site as "Seller DeepLink"
      */
-    public static final String SAMSUNG_URL_PREFIX           = "samsungapps://ProductDetail/";
-    public static final String SAMSUNG_WEB_SEARCH_PREFIX    = "http://www.samsungapps.com/topApps/topAppsList.as?mkt_keyword=";
+    public static final String SAMSUNG_URL_PREFIX               = "samsungapps://ProductDetail/";
+    public static final String SAMSUNG_URL_VENDOR_ALL_PREFIX    = "samsungapps://SellerDetail/";
+    public static final String SAMSUNG_WEB_SEARCH_PREFIX        = "http://www.samsungapps.com/topApps/topAppsList.as?mkt_keyword=";
 }

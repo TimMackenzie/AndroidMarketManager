@@ -56,6 +56,7 @@ public class AMMLinks {
                                         final String googleDeveloperID, 
                                         final String amazonDeveloperID,
                                         final String bbDeveloperID,
+                                        final String samsungDeveloperID,
                                         final String developerName) {               
         if(marketSelector == AMMConstants.MARKET_SELECTOR_NOOK) {
             /*
@@ -124,10 +125,13 @@ public class AMMLinks {
                         + developerName;
             } else if(marketSelector == AMMConstants.MARKET_SELECTOR_SAMSUNG){
                 /*
-                 * Currently no Samsung url for all apps, so using web search
+                 * Previous Samsung URL to search on the web
                  */
-                marketUrl =   AMMConstants.SAMSUNG_WEB_SEARCH_PREFIX + "\""
-                            + developerName + "\"";
+//                marketUrl =   AMMConstants.SAMSUNG_WEB_SEARCH_PREFIX + "\""
+//                            + developerName + "\"";
+                
+                marketUrl = AMMConstants.SAMSUNG_URL_VENDOR_ALL_PREFIX
+                        + samsungDeveloperID;
             }
             
             if(marketUrl.equals("")) {

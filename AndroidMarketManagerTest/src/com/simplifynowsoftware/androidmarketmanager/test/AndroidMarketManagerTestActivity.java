@@ -47,6 +47,7 @@ public class AndroidMarketManagerTestActivity extends Activity {
     public static final String APP_PACKAGE = "com.evernote";
     public static final String NOOK_EAN = "2940043353757";
     public static final String BBID = "56171";
+    public static final String SAMSUNG_VENDOR_ID = "adevqewb3c"; // Using ID from Simplify Now, LLC - don't know the one for Evernote
     
     
     @Override
@@ -89,6 +90,7 @@ public class AndroidMarketManagerTestActivity extends Activity {
                                 GOOGLE_DEVELOPER_ID, 
                                 AMAZON_DEVELOPER_ID, 
                                 BB_DEVELOPER_ID, 
+                                SAMSUNG_VENDOR_ID,
                                 DEVELOPER_NAME);
     }
     
@@ -96,6 +98,7 @@ public class AndroidMarketManagerTestActivity extends Activity {
      * Run the device checks from AMMUtils and report the results
      */
     public void onTestDevice(final View v) {
+        @SuppressWarnings("deprecation")
         final boolean isKindleFire = AMMUtils.isDeviceKindleFire(this);
         final boolean isNook = AMMUtils.isDeviceNook(this);
         final boolean isNookCT = AMMUtils.isDeviceNookCT(this);
