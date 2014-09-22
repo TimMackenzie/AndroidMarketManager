@@ -25,7 +25,7 @@ import android.util.Log;
  * 
  * @author Tim Mackenzie - Simplify Now, LLC
  * @since Android API 3
- * @version 1.0.1
+ * @version 1.0.2
  */
 public class AMMUtils {  
     /**
@@ -33,7 +33,10 @@ public class AMMUtils {
      *  
      * @param context - the context to run the check within
      * @return true if this device is the Kindle Fire
+     * 
+     * @deprecated don't use this for general detection of Amazon devices - this only detects the original Kindle Fire (Gen 1)
      */
+    @Deprecated
     public static boolean isDeviceKindleFire(final Context context) {
         boolean isKindle = false;
 
