@@ -35,7 +35,7 @@ public class AMMConstants {
      * If experiencing trouble with this package, enable this debug flag to 
      *  turn on additional logging.
      */
-    public static final boolean DEBUG_ENABLED = true;
+    public static final boolean DEBUG_ENABLED = false;
     
     /*
      * These constants trigger the behavior for the specified Android app market
