@@ -35,7 +35,7 @@ public class AMMConstants {
      * If experiencing trouble with this package, enable this debug flag to 
      *  turn on additional logging.
      */
-    public static final boolean DEBUG_ENABLED = false;
+    public static final boolean DEBUG_ENABLED = true;
     
     /*
      * These constants trigger the behavior for the specified Android app market
@@ -121,11 +121,17 @@ public class AMMConstants {
      *  Entire phrase must be quoted (%22)
      *  Spaces (%20)
      *  Commas (%2C)
+     *  
+     *  Reference:
+     *   http://developer.android.com/distribute/tools/promote/linking.html#UriSummary
      */
-    public static final String MARKET_URL_SEARCH_PREFIX     = "market://search?q="; // append vendor name string, using %20 and other formatting chars as appropriate
-    public static final String MARKET_URL_DEVID_PREFIX      = "market://developer?id=";
-    public static final String MARKET_URL_APP_PREFIX        = "market://details?id=";
-    public static final String MARKET_URL_APP_PREFIX_WEB    = "http://play.google.com/store/apps/details?id=";
+    public static final String MARKET_URL_SEARCH_PREFIX         = "market://search?q="; // append vendor name string, using %20 and other formatting chars as appropriate
+    public static final String MARKET_URL_DEVID_PREFIX          = "market://developer?id="; // Does not work for market::/ URLs
+    public static final String MARKET_URL_DEVSEARCH_PREFIX      = "market://search?q=pub:"; // 
+    public static final String MARKET_URL_APP_PREFIX            = "market://details?id=";
+    public static final String MARKET_URL_APP_PREFIX_WEB        = "http://play.google.com/store/apps/details?id=";
+    public static final String MARKET_URL_DEVID_PREFIX_WEB      = "http://play.google.com/store/apps/developer?id="; // only for HTTP requests, apparently
+    public static final String MARKET_URL_DEVSEARCH_PREFIX_WEB  = "https://play.google.com/store/search?q=pub:";
     
     /*
      * Amazon Appstore URLs constructed as such:
@@ -165,6 +171,7 @@ public class AMMConstants {
      *      
      *  See the official documentation:
      *      https://developer.amazon.com/sdk/in-app-purchasing/sample-code/deeplink.html
+     *      https://developer.amazon.com/appsandservices/community/post/Tx3A1TVL67TB24B/Linking-To-the-Amazon-Appstore-for-Android
      *      
      *  Note that AMMLinks currently doesn't use the asin, associate, or 
      *      referral options.  It may in the future.

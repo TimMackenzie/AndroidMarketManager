@@ -18,6 +18,7 @@ package com.simplifynowsoftware.androidmarketmanager.test;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -31,19 +32,20 @@ import com.simplifynowsoftware.androidmarketmanager.AMMUtils;
  *   
  * @author Tim Mackenzie - Simplify Now, LLC
  * @since Android API 3
- * @version 1.0.1
+ * @version 1.0.2
  */
 public class AndroidMarketManagerTestActivity extends Activity {
     
     /* 
      * Test data for the app Evernote.  Replace all of these constants to test
-     *  a different app/vendor.
+     *  a different app/vendor.  BB_DEVELOPER_ID is for Simplify Now because 
+     *  Evernote's ID comes up blank (at least on the Playbook) 
      * Note the use of formatting characters.
      */
     public static final String DEVELOPER_NAME = "Evernote";
-    public static final String GOOGLE_DEVELOPER_ID = "%22Evernote+Corp.%22";
-    public static final String AMAZON_DEVELOPER_ID = "Evernote%20Corp.";
-    public static final String BB_DEVELOPER_ID = "581";
+    public static final String GOOGLE_DEVELOPER_ID = "Evernote+Corporation";
+    public static final String AMAZON_PACKAGE_ID = "com.evernote";//"B004LOMB2Q";
+    public static final String BB_DEVELOPER_ID = "24165";// Evernote is "581", but somehow this doesn't work.  Using ID for Simplify Now
     public static final String APP_PACKAGE = "com.evernote";
     public static final String NOOK_EAN = "2940043353757";
     public static final String BBID = "56171";
@@ -71,7 +73,9 @@ public class AndroidMarketManagerTestActivity extends Activity {
     /*
      * Show the app in the selected market
      */
-    public void onShowApp(final View v) {      
+    public void onShowApp(final View v) {
+        Log.d("onShowApp", "radio = " + getRadioSelection());
+        
         AMMLinks.marketShowApp( this, 
                                 getRadioSelection(), 
                                 APP_PACKAGE, 
@@ -85,10 +89,12 @@ public class AndroidMarketManagerTestActivity extends Activity {
      * Show all apps for this vendor in the selected market
      */
     public void onShowAll(final View v) {
+        Log.d("onShowAll", "radio = " + getRadioSelection());
+        
         AMMLinks.marketShowAll( this, 
                                 getRadioSelection(), 
                                 GOOGLE_DEVELOPER_ID, 
-                                AMAZON_DEVELOPER_ID, 
+                                AMAZON_PACKAGE_ID, 
                                 BB_DEVELOPER_ID, 
                                 SAMSUNG_VENDOR_ID,
                                 DEVELOPER_NAME);

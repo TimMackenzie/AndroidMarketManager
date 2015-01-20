@@ -35,7 +35,7 @@ import android.util.Log;
  * 
  * @author Tim Mackenzie - Simplify Now, LLC
  * @since Android API 3
- * @version 1.1.1
+ * @version 1.1.2
  */
 public class AMMLinks {
     /**
@@ -47,14 +47,14 @@ public class AMMLinks {
      * @param context              the context context to perform this operation within
      * @param marketSelector       numeric identifier for the app market to link to
      * @param googleDeveloperID    developer ID for Google Play
-     * @param amazonDeveloperID    developer ID for the Amazon Appstore
+     * @param amazonPackageID      package ID for an app released on the Amazon Appstore by same developer
      * @param bbDeveloperID        developer ID for BlackBerry Appworld
      * @param developerName        name used to search for developer in app markets
      */
     public static void marketShowAll(   final Context context, 
                                         final int marketSelector, 
                                         final String googleDeveloperID, 
-                                        final String amazonDeveloperID,
+                                        final String amazonPackageID,
                                         final String bbDeveloperID,
                                         final String samsungDeveloperID,
                                         final String developerName) {               
@@ -82,14 +82,28 @@ public class AMMLinks {
                     marketUrl =   AMMConstants.AMAZON_AMZ_PREFIX_COMMON;
                 }
                 
-                if(null == amazonDeveloperID) {
-                    // Fallback - find by searching from the current package name.
+                if(null == amazonPackageID) {
+                    /*
+                     *  Fallback - find by searching from the current package name.
+                     *  This will NOT find anything if the app has not been released,
+                     *   even if the base package name is shared by your other apps.
+                     */
                     marketUrl +=  AMMConstants.AMAZON_URL_TYPE_APP + context.getPackageName() 
                                 + AMMConstants.AMAZON_URL_POSTFIX_SHOWALL;
                 } else {
-                    // Explicit search for developer's apps
-                    marketUrl +=  AMMConstants.AMAZON_URL_TYPE_SEARCH 
-                                + amazonDeveloperID;
+                    /*
+                     *  Search for developer's apps
+                     */
+                    /* WARNING - some have reported that 'showall' with ASIN is more reliable.
+                     *  That is not yet implemented here, but would be trivial to 
+                     *  swap the URL as shown below, and passing the correct ASIN 
+                     *  for the amazonPackageID value
+                     */                   
+//                    marketUrl +=  AMMConstants.AMAZON_URL_TYPE_ASIN + amazonPackageID /* pass ASIN to amazonPackageID */
+//                            + AMMConstants.AMAZON_URL_POSTFIX_SHOWALL;
+                    
+                    marketUrl +=  AMMConstants.AMAZON_URL_TYPE_APP + amazonPackageID 
+                            + AMMConstants.AMAZON_URL_POSTFIX_SHOWALL;
                 }
             } else if(marketSelector == AMMConstants.MARKET_SELECTOR_GOOGLE){
                 if(null == googleDeveloperID) {
@@ -104,25 +118,31 @@ public class AMMLinks {
                             + developerPackage;
                 } else {
                     // Search by developer ID
-                    marketUrl =   AMMConstants.MARKET_URL_SEARCH_PREFIX 
+                    marketUrl =   AMMConstants.MARKET_URL_DEVSEARCH_PREFIX 
                                 + googleDeveloperID;
                 }
             } else if(marketSelector == AMMConstants.MARKET_SELECTOR_BLACKBERRY){
                 /*
-                 * The web page loaded to show all apps in BlackBerry Appworld
-                 *  is not the native browser, and therefore doesn't work to
-                 *  click on app links.  More research is needed to show 
-                 *  all apps by the developer where users can directly view
-                 *  and buy apps.
-                 * Until a better solution is found, doing a search using 
-                 *  the Google Play syntax.  This finds more than just apps
-                 *  by this dev.
+                 * For BlackBerry Appworld, Google play URLs work, and so do 
+                 *  the custom BlackBerry URLs.
+                 * 
+                 * History: for a while, the BlackBerry links all broke.  Then
+                 *  the web one worked but the appworld:// urls didn't.
+                 *  However, the web link opened a web browser instead of the
+                 *  Appworld app, so apps couldn't be downloaded.
+                 *  Now (January 2015), it appears that either the appworld:// 
+                 *  URL or the HTTP:// URL can be used to the same effect.
+                 *  Good thing too, since the Google Play URLs now find a lot
+                 *  of garbage.
                  */ 
-//                marketUrl =   AMMConstants.BLACKBERRY_URL_VENDOR_ALL_WEB_PREFIX
-//                            + bbDeveloperID;
-                
-                marketUrl = AMMConstants.MARKET_URL_SEARCH_PREFIX 
-                        + developerName;
+                marketUrl =   AMMConstants.BLACKBERRY_URL_VENDOR_ALL_PREFIX //BLACKBERRY_URL_VENDOR_ALL_WEB_PREFIX
+                            + bbDeveloperID;
+                /*
+                 * As of 2014, using any of the Google Play searches brings
+                 *  back a mountain of garbage.
+                 */
+//                marketUrl = AMMConstants.MARKET_URL_SEARCH_PREFIX 
+//                        + developerName;
             } else if(marketSelector == AMMConstants.MARKET_SELECTOR_SAMSUNG){
                 /*
                  * Previous Samsung URL to search on the web
@@ -141,6 +161,10 @@ public class AMMLinks {
                  */
                 showMarketMessage( context, developerName );
             } else {
+                if(AMMConstants.DEBUG_ENABLED) {
+                    Log.d("marketShowAll", "Launching URL: " + marketUrl);
+                }
+                
                 final Uri uri = Uri.parse(marketUrl);
                 final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 
@@ -160,7 +184,7 @@ public class AMMLinks {
                     showMarketMessage( context, developerName );
                     
                     if(AMMConstants.DEBUG_ENABLED) {
-                        Log.e("marketShowAll", "Can't launch intent for URL: " + marketUrl);
+                        Log.e("marketShowAll", "Can't launch intent for URL: " + marketUrl, e);
                     }
                 }
             }
@@ -231,6 +255,9 @@ public class AMMLinks {
              * Note that if your package name is different in BlackBerry, 
              *  you'll have to ensure the proper data is passed in for the
              *  packageName for that build.
+             * January 2015 - it appears that the appworld:// URLs now work,
+             *  and are needed for 'find all'.  They are not needed here for a
+             *  single app though, so leaving as-is unless there's a problem.
              */
             if(null != appPackage){
                 marketUrl =   AMMConstants.MARKET_URL_APP_PREFIX 
@@ -284,7 +311,7 @@ public class AMMLinks {
                 showMarketMessage( context, developerName );
                 
                 if(AMMConstants.DEBUG_ENABLED) {
-                    Log.e("marketShowApp", "Can't launch intent for URL: " + marketUrl);
+                    Log.e("marketShowApp", "Can't launch intent for URL: " + marketUrl, e);
                 }
             }
         }
