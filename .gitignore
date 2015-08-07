@@ -34,5 +34,7 @@ local.properties
 *.ipr
 *~
 *.swp
-*/gradlew*
+/gradlew*
 */gradle/
+/build/
+/gradle/
