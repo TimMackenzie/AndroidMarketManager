@@ -22,13 +22,17 @@ package com.simplifynowsoftware.androidmarketmanager;
  * Additional notes:
  *  SlideMe can accept market URLs, but if the developer/package ID differs from
  *   that on Google Play it won't be found.
- *  Nokia X also accepts Google Play market URLs, with the same caveat about
- *   having an identical package ID.  Web links differ, of course.
- *   http://developer.nokia.com/community/wiki/Deep_Linking_to_Store_on_Nokia_X
- *   
+ *
+ * A number of app stores have disappeared along the way, and while most of the
+ *  logic has been removed some of the constants remain here for reference.
+ *
+ * A partial list of defunct app stores:
+ *  Nokia X
+ *  Nook Store (Barnes and Noble)
+ *
  * @author Tim Mackenzie - Simplify Now, LLC
  * @since Android API 3
- * @version 1.0.3
+ * @version 1.1.0
  */
 public class AMMConstants {
     /*
@@ -52,7 +56,7 @@ public class AMMConstants {
     public static final int MARKET_SELECTOR_NONE        = 0;
     public static final int MARKET_SELECTOR_GOOGLE      = 1;
     public static final int MARKET_SELECTOR_AMAZON      = 2;
-    public static final int MARKET_SELECTOR_NOOK        = 3;
+    public static final int MARKET_SELECTOR_NOOK        = 3; // no longer used
     public static final int MARKET_SELECTOR_BLACKBERRY  = 4;
     public static final int MARKET_SELECTOR_SAMSUNG     = 5;
     

@@ -57,135 +57,123 @@ public class AMMLinks {
                                         final String amazonPackageID,
                                         final String bbDeveloperID,
                                         final String samsungDeveloperID,
-                                        final String developerName) {               
-        if(marketSelector == AMMConstants.MARKET_SELECTOR_NOOK) {
+                                        final String developerName) {
+        String marketUrl = "";
+
+        /*
+         * Generate the market URL for Google, Amazon, and BlackBerry.
+         * See AMMConstants for details on URL construction for each market
+         */
+        if(marketSelector == AMMConstants.MARKET_SELECTOR_AMAZON) {
+            if(AMMConstants.AMAZON_USE_HTTP) {
+                marketUrl =   AMMConstants.AMAZON_URL_PREFIX_COMMON;
+            } else {
+                marketUrl =   AMMConstants.AMAZON_AMZ_PREFIX_COMMON;
+            }
+
+            if(null == amazonPackageID) {
+                /*
+                 *  Fallback - find by searching from the current package name.
+                 *  This will NOT find anything if the app has not been released,
+                 *   even if the base package name is shared by your other apps.
+                 */
+                marketUrl +=  AMMConstants.AMAZON_URL_TYPE_APP + context.getPackageName()
+                            + AMMConstants.AMAZON_URL_POSTFIX_SHOWALL;
+            } else {
+                /*
+                 *  Search for developer's apps
+                 */
+                /* WARNING - some have reported that 'showall' with ASIN is more reliable.
+                 *  That is not yet implemented here, but would be trivial to
+                 *  swap the URL as shown below, and passing the correct ASIN
+                 *  for the amazonPackageID value
+                 */
+//                    marketUrl +=  AMMConstants.AMAZON_URL_TYPE_ASIN + amazonPackageID /* pass ASIN to amazonPackageID */
+//                            + AMMConstants.AMAZON_URL_POSTFIX_SHOWALL;
+
+                marketUrl +=  AMMConstants.AMAZON_URL_TYPE_APP + amazonPackageID
+                        + AMMConstants.AMAZON_URL_POSTFIX_SHOWALL;
+            }
+        } else if(marketSelector == AMMConstants.MARKET_SELECTOR_GOOGLE){
+            if(null == googleDeveloperID) {
+                /*
+                 * Attempt to extract developer name from package name.
+                 * This might not work too well - it is better to set the
+                 *  googleDeveloperID.
+                 */
+                final String packageName = context.getPackageName();
+                final String developerPackage = packageName.substring(0, packageName.lastIndexOf('.'));
+                marketUrl =   AMMConstants.MARKET_URL_SEARCH_PREFIX
+                        + developerPackage;
+            } else {
+                // Search by developer ID
+                marketUrl =   AMMConstants.MARKET_URL_DEVSEARCH_PREFIX
+                            + googleDeveloperID;
+            }
+        } else if(marketSelector == AMMConstants.MARKET_SELECTOR_BLACKBERRY){
             /*
-             * The Nook Store doesn't currently support linking to all apps
-             * from a particular developer, only to individual apps.
-             * 
-             * A future release of this package is planned to allow a
-             * custom callback in the case of Nook, for developers who have
-             * written a custom view showing their apps.
+             * For BlackBerry Appworld, Google play URLs work, and so do
+             *  the custom BlackBerry URLs.
+             *
+             * History: for a while, the BlackBerry links all broke.  Then
+             *  the web one worked but the appworld:// urls didn't.
+             *  However, the web link opened a web browser instead of the
+             *  Appworld app, so apps couldn't be downloaded.
+             *  Now (January 2015), it appears that either the appworld://
+             *  URL or the HTTP:// URL can be used to the same effect.
+             *  Good thing too, since the Google Play URLs now find a lot
+             *  of garbage.
+             */
+            marketUrl =   AMMConstants.BLACKBERRY_URL_VENDOR_ALL_PREFIX //BLACKBERRY_URL_VENDOR_ALL_WEB_PREFIX
+                        + bbDeveloperID;
+            /*
+             * As of 2014, using any of the Google Play searches brings
+             *  back a mountain of garbage.
+             */
+//                marketUrl = AMMConstants.MARKET_URL_SEARCH_PREFIX 
+//                        + developerName;
+        } else if(marketSelector == AMMConstants.MARKET_SELECTOR_SAMSUNG){
+            /*
+             * Previous Samsung URL to search on the web
+             */
+//                marketUrl =   AMMConstants.SAMSUNG_WEB_SEARCH_PREFIX + "\""
+//                            + developerName + "\"";
+
+            marketUrl = AMMConstants.SAMSUNG_URL_VENDOR_ALL_PREFIX
+                    + samsungDeveloperID;
+        }
+
+        if(marketUrl.equals("")) {
+            /*
+             * Failed to generate a URL for the selected market.  Tell user
+             *  how to find it themselves.
              */
             showMarketMessage( context, developerName );
         } else {
-            String marketUrl = "";
-            
-            /*
-             * Generate the market URL for Google, Amazon, and BlackBerry.
-             * See AMMConstants for details on URL construction for each market
-             */
-            if(marketSelector == AMMConstants.MARKET_SELECTOR_AMAZON) {
-                if(AMMConstants.AMAZON_USE_HTTP) {
-                    marketUrl =   AMMConstants.AMAZON_URL_PREFIX_COMMON;
-                } else {
-                    marketUrl =   AMMConstants.AMAZON_AMZ_PREFIX_COMMON;
-                }
-                
-                if(null == amazonPackageID) {
-                    /*
-                     *  Fallback - find by searching from the current package name.
-                     *  This will NOT find anything if the app has not been released,
-                     *   even if the base package name is shared by your other apps.
-                     */
-                    marketUrl +=  AMMConstants.AMAZON_URL_TYPE_APP + context.getPackageName() 
-                                + AMMConstants.AMAZON_URL_POSTFIX_SHOWALL;
-                } else {
-                    /*
-                     *  Search for developer's apps
-                     */
-                    /* WARNING - some have reported that 'showall' with ASIN is more reliable.
-                     *  That is not yet implemented here, but would be trivial to 
-                     *  swap the URL as shown below, and passing the correct ASIN 
-                     *  for the amazonPackageID value
-                     */                   
-//                    marketUrl +=  AMMConstants.AMAZON_URL_TYPE_ASIN + amazonPackageID /* pass ASIN to amazonPackageID */
-//                            + AMMConstants.AMAZON_URL_POSTFIX_SHOWALL;
-                    
-                    marketUrl +=  AMMConstants.AMAZON_URL_TYPE_APP + amazonPackageID 
-                            + AMMConstants.AMAZON_URL_POSTFIX_SHOWALL;
-                }
-            } else if(marketSelector == AMMConstants.MARKET_SELECTOR_GOOGLE){
-                if(null == googleDeveloperID) {
-                    /*
-                     * Attempt to extract developer name from package name.  
-                     * This might not work too well - it is better to set the
-                     *  googleDeveloperID.
-                     */
-                    final String packageName = context.getPackageName();
-                    final String developerPackage = packageName.substring(0, packageName.lastIndexOf('.'));
-                    marketUrl =   AMMConstants.MARKET_URL_SEARCH_PREFIX 
-                            + developerPackage;
-                } else {
-                    // Search by developer ID
-                    marketUrl =   AMMConstants.MARKET_URL_DEVSEARCH_PREFIX 
-                                + googleDeveloperID;
-                }
-            } else if(marketSelector == AMMConstants.MARKET_SELECTOR_BLACKBERRY){
-                /*
-                 * For BlackBerry Appworld, Google play URLs work, and so do 
-                 *  the custom BlackBerry URLs.
-                 * 
-                 * History: for a while, the BlackBerry links all broke.  Then
-                 *  the web one worked but the appworld:// urls didn't.
-                 *  However, the web link opened a web browser instead of the
-                 *  Appworld app, so apps couldn't be downloaded.
-                 *  Now (January 2015), it appears that either the appworld:// 
-                 *  URL or the HTTP:// URL can be used to the same effect.
-                 *  Good thing too, since the Google Play URLs now find a lot
-                 *  of garbage.
-                 */ 
-                marketUrl =   AMMConstants.BLACKBERRY_URL_VENDOR_ALL_PREFIX //BLACKBERRY_URL_VENDOR_ALL_WEB_PREFIX
-                            + bbDeveloperID;
-                /*
-                 * As of 2014, using any of the Google Play searches brings
-                 *  back a mountain of garbage.
-                 */
-//                marketUrl = AMMConstants.MARKET_URL_SEARCH_PREFIX 
-//                        + developerName;
-            } else if(marketSelector == AMMConstants.MARKET_SELECTOR_SAMSUNG){
-                /*
-                 * Previous Samsung URL to search on the web
-                 */
-//                marketUrl =   AMMConstants.SAMSUNG_WEB_SEARCH_PREFIX + "\""
-//                            + developerName + "\"";
-                
-                marketUrl = AMMConstants.SAMSUNG_URL_VENDOR_ALL_PREFIX
-                        + samsungDeveloperID;
+            if(AMMConstants.DEBUG_ENABLED) {
+                Log.d("marketShowAll", "Launching URL: " + marketUrl);
             }
-            
-            if(marketUrl.equals("")) {
-                /* 
-                 * Failed to generate a URL for the selected market.  Tell user
-                 *  how to find it themselves.
+
+            final Uri uri = Uri.parse(marketUrl);
+            final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+
+            /*
+             * No history.  If user leaves app and returns, don't remember
+             *  being in the market
+             */
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+            try {
+                context.startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                /*
+                 * Failed to load the URL for the selected market.  Tell
+                 *  user how to find it themselves.
                  */
                 showMarketMessage( context, developerName );
-            } else {
+
                 if(AMMConstants.DEBUG_ENABLED) {
-                    Log.d("marketShowAll", "Launching URL: " + marketUrl);
-                }
-                
-                final Uri uri = Uri.parse(marketUrl);
-                final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                
-                /* 
-                 * No history.  If user leaves app and returns, don't remember
-                 *  being in the market 
-                 */
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                
-                try {
-                    context.startActivity(intent);
-                } catch (ActivityNotFoundException e) {
-                    /* 
-                     * Failed to load the URL for the selected market.  Tell 
-                     *  user how to find it themselves.
-                     */
-                    showMarketMessage( context, developerName );
-                    
-                    if(AMMConstants.DEBUG_ENABLED) {
-                        Log.e("marketShowAll", "Can't launch intent for URL: " + marketUrl, e);
-                    }
+                    Log.e("marketShowAll", "Can't launch intent for URL: " + marketUrl, e);
                 }
             }
         }
@@ -199,15 +187,14 @@ public class AMMLinks {
      * -Show the current app (e.g. to allow rating it)<br>
      * -Show a companion app that users should install<br>
      * <p>
-     * Specify the app with appPackage, nookEAN, and bbID.
+     * Specify the app with appPackage, nookEAN (no longer used), and bbID.
      * <p>
      * If necessary, use context.getPackageName() to obtain package name for
      *  current app.
      * <p>
-     * Both nookEAN and bbID must come from the respective app stores, and are
-     *  not known until the app is released to that store.  In the case of 
-     *  BlackBerry, the bbVendorID can be provided to show all apps by 
-     *  this developer.  If bbID is provided, bbVendorID is ignored.
+     * bbID must come from Blackberry, and is not known until the app is
+     *  released to that store.  The bbVendorID can be provided to show all
+     *  apps by this developer.  If bbID is provided, bbVendorID is ignored.
      * <p>
      * Unknown values for the app package/ID can be left blank, but this will
      *  cause failure (the market message) if that market is selected.
@@ -215,7 +202,7 @@ public class AMMLinks {
      * @param context          The context context to perform this operation within
      * @param marketSelector   Numeric identifier for the app market to link to
      * @param appPackage       Full package name for Google and Amazon (e.g. com.x.x)
-     * @param nookEAN          Numeric ID for app on Nook Store
+     * @param nookEAN          Numeric ID for app on Nook Store, no longer used
      * @param bbID             Numeric ID for app on BlackBerry Appworld
      * @param bbVendorID       Numeric ID for vendor on BlackBerry Appworld
      * @param developerName    Name used to search for developer in app markets
@@ -230,7 +217,7 @@ public class AMMLinks {
         String marketUrl = "";
         
         /*
-         * Generate the market URL for Google, Amazon, BlackBerry, and Nook.
+         * Generate the market URL for Google, Amazon, and BlackBerry.
          * See AMMConstants for details on URL construction for each market.
          * If any required values are null, the error message will be displayed
          */
@@ -246,9 +233,6 @@ public class AMMLinks {
         } else if(marketSelector == AMMConstants.MARKET_SELECTOR_GOOGLE & null != appPackage){
             marketUrl =   AMMConstants.MARKET_URL_APP_PREFIX 
                         + appPackage;
-        } else if(marketSelector == AMMConstants.MARKET_SELECTOR_NOOK & null != nookEAN){
-            // Just the EAN for Nook
-            marketUrl = nookEAN;
         } else if(marketSelector == AMMConstants.MARKET_SELECTOR_BLACKBERRY){
             /*
              * Until BB linking works again, reverting to Google Play linking
@@ -283,17 +267,8 @@ public class AMMLinks {
              */
             showMarketMessage( context, developerName );
         } else {
-            Intent intent = null;
-            
-            // Special case for Nook market
-            if(marketSelector == AMMConstants.MARKET_SELECTOR_NOOK) {
-                intent = new Intent();
-                intent.setAction(AMMConstants.NOOK_MARKET_INTENT); 
-                intent.putExtra(AMMConstants.NOOK_MARKET_EXTRA_NAME, marketUrl);
-            } else {
-                final Uri uri = Uri.parse(marketUrl);
-                intent = new Intent(Intent.ACTION_VIEW, uri);
-            }
+            final Uri uri = Uri.parse(marketUrl);
+            final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 
             /* 
              * No history.  If user leaves app and returns, don't remember
@@ -329,9 +304,9 @@ public class AMMLinks {
      * <br>
      * If the user rotates the screen, this will be leaked unless the reference
      *  is managed.
-     * @param           The context context to perform this operation within
-     * @param message   The message to be displayed in the dialog box
-     * @return          the Dialog object for tracking
+     * @param context       The context context to perform this operation within
+     * @param developerName The developer name to be displayed in the dialog box
+     * @return              The Dialog object for tracking
      */
     protected static Dialog showMarketMessage(final Context context, final String developerName) {
         final String message = generateMarketMessage(context, developerName);

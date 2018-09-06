@@ -69,13 +69,14 @@ public class AMMUtils {
      * @param context - the context to run the check within
      * @return true if this device is a Nook Color or Nook Tablet
      */
+    @Deprecated
     public static boolean isDeviceNookCT(final Context context) {
         boolean isCustom = false;
 
         final String model = Build.MODEL;
         
-        if (    model.equals(AMMConstants.DEVICE_MODEL_NOOK_COLOR) |        // BNRV200 = NOOK Color
-                model.equals(AMMConstants.DEVICE_MODEL_NOOK_TABLET_16GB) |       // BNTV250 = NOOK Tablet 16GB
+        if (    model.equals(AMMConstants.DEVICE_MODEL_NOOK_COLOR) ||       // BNRV200  = NOOK Color
+                model.equals(AMMConstants.DEVICE_MODEL_NOOK_TABLET_16GB) || // BNTV250  = NOOK Tablet 16GB
                 model.equals(AMMConstants.DEVICE_MODEL_NOOK_TABLET_8GB)) {  // BNTV250A = NOOK Tablet 8GB 
             if(AMMConstants.DEBUG_ENABLED) {
                     Log.e("isDeviceNookCT", "Device is Nook Color or Nook Tablet.  Model = " + model);
@@ -104,7 +105,7 @@ public class AMMUtils {
 
         final String model = Build.MODEL;
         
-        if (    model.equals(AMMConstants.DEVICE_MODEL_NOOK_HD) |       // BNTV400 = NOOK HD
+        if (    model.equals(AMMConstants.DEVICE_MODEL_NOOK_HD) ||      // BNTV400 = NOOK HD
                 model.equals(AMMConstants.DEVICE_MODEL_NOOK_HDPLUS)) {  // BNTV600 = NOOK HD+
             if(AMMConstants.DEBUG_ENABLED) {
                 Log.e("isDeviceNookHD", "Device is Nook HD or Nook HD+.  Model = " + model);
